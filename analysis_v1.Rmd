@@ -1,0 +1,71 @@
+---
+title: "Analysis of Crime Data_v1"
+author: "Fiona Chin"
+date: "October 15, 2016"
+output: html_document
+---
+
+# Hello This is the first analysis of the data!  We made stuff happen.
+So our goal is to see how to predict crime incidents.)
+
+```{r echo=FALSE, include=FALSE, cache=FALSE}
+#Must install packages first using install.packages("insert_package_name")
+library(readr)
+library(randomForest)
+library(caret)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+library(corrplot)
+
+set.seed(231)
+#Navigating through directory
+setwd("/Users/fi/Documents/GitHub/Predicting-Crimes-in-Philadelphia") # Set own path
+
+#Importing data in two different ways 
+train <- read.csv("crime.csv", stringsAsFactors=FALSE)
+
+#For the time being, Lets remove the NA rows so we can see the basic relationships
+train2 = train[complete.cases(train),]
+nrow(train2)
+
+```
+
+## General Histograms
+
+### Police Service Area Histogram
+
+```{r, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+ggplot(train,aes(x = Psa)) + geom_bar()
+```
+We can say that majority of the crime occurs in regions 1, 2, and 3.  Lets remove the number regions since I think regions A through Z indicate sub-regions of 1, 2, 3, and 4???
+
+```{r, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+train3 = filter(train, Psa != 1 & Psa != 2 & Psa != 3 & Psa != 4)
+ggplot(train3,aes(x = Psa)) + geom_bar()
+```
+We should figure out what regions T to Z are since they have the lowest count of crimes (not specified by type of crime yet)
+
+### Hour
+The time for crime is in Philadelphia occurs:
+```{r, echo=FALSE, cache=FALSE, warning=FALSE, message=FALSE}
+ggplot(train,aes(x =Hour)) + geom_bar()
+```
+
+## Ok Let's start with a really complicated Correlation Analysis
+This really doesn't tell us new information because the features that have strong relationships logically make sense. 
+```{r, echo=FALSE}
+#Correlation Matrix
+M <- cor(train2[sapply(train, function(x) !is.character(x))]) 
+corrplot(M, method = "number", order = "hclust",type='lower', diag=F, addCoefasPercent=T, )
+
+
+```
+
+
+## Have to clean data and separate in terms of time and date
+
+
+
+
+
