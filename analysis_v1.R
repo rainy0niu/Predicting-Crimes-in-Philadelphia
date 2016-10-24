@@ -9,7 +9,7 @@ library(corrplot)
 
 set.seed(231)
 #Navigating through directory
-setwd("/Users/fi/Documents/GitHub/Predicting-Crimes-in-Philadelphia") # Set own path
+setwd("/Users/fi/Documents/GitHub/") # Set own path
 
 #Importing data in two different ways 
 train <- read.csv("crime.csv", stringsAsFactors=FALSE)
@@ -19,9 +19,19 @@ head(train)
 nrow(train)
 ncol(train)
 
+#Check number of NA values
+sapply(train, function(x) sum(is.na(x)))
+
 #For the time being, Lets remove the NA rows so we can see the basic relationships
 train2 = train[complete.cases(train),]
 nrow(train2)
+
+# Convert Date into separate columns
+# https://www.kaggle.com/anu2analytics/d/mchirico/philadelphiacrimedata/crime-graph-r/code
+train$dt = as.Date(train$Dispatch_Date)
+train$year = as.numeric(format(train$dt, "%Y"))
+train$mth = as.numeric(format(train$dt, "%m"))
+train$day = as.numeric(format(train$dt, "%d"))
 
 #Correlation Matrix
 M <- cor(train2[sapply(train, function(x) !is.character(x))]) 
@@ -32,3 +42,6 @@ corrplot(M, method = "number", order = "hclust",type='lower', diag=F, addCoefasP
 
 # We can break down the date and time columns to 
 ggplot(train,aes(x = Psa)) + geom_bar()
+
+# Order the data
+train2 <- train[order(train$year, train$mth, train$day),] 
