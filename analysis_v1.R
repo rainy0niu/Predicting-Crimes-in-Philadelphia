@@ -24,7 +24,7 @@ sapply(train, function(x) sum(is.na(x)))
 
 #For the time being, Lets remove the NA rows so we can see the basic relationships
 train2 = train[complete.cases(train),]
-nrow(train2)
+(nrow(train) - nrow(train2))/nrow(train) # the number of rows that are NA values
 
 # Convert Date into separate columns
 # https://www.kaggle.com/anu2analytics/d/mchirico/philadelphiacrimedata/crime-graph-r/code
@@ -45,3 +45,5 @@ ggplot(train,aes(x = Psa)) + geom_bar()
 
 # Order the data
 train2 <- train[order(train$year, train$mth, train$day),] 
+
+
