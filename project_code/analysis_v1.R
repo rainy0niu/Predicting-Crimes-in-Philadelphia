@@ -47,3 +47,4 @@ ggplot(train,aes(x = Psa)) + geom_bar()
 train2 <- train[order(train$year, train$mth, train$day),] 
 
 
+ggplot(train,aes(x = Psa)) + geom_bar()
