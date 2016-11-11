@@ -38,7 +38,9 @@ unique_crimes = unique(train2$Text_General_Code, incomparables = FALSE)
 dim(train2)
 
 #order data by date
-train2$Month <- as.yearmon(train2$Month)
+train2$Month <- as.yearmon(train2$Month)  # This didn't work
 train2[order(train2$Month),]
 #find last years
 head(train2)
+
+#Get 
